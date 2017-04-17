@@ -92,13 +92,15 @@ def sentencias():
     if tokens[i]=="do":
           return repeticion()
     if tokens[i]=="cin":
-          return sent-cin()
+          return sent_cin()
     if tokens[i]=="cout":
-          return sent-cout()
+          return sent_cout()
     if tokens[i]=="{":
           return bloque()
     if isAssign():
           return asignacion()
+    errorSintactico()
+
     return errorSintactico()
 
 def seleccion():
@@ -208,6 +210,34 @@ def factor():
          except ValueError:
                errorSintactico()
           
+
+    
+
+def sent_cin():
+    match("cin")
+    nombre="cin"
+    if es_id():
+          agregarElemento(arbol,tokens[i],nombre)
+          i+=1
+          return nombre
+    else:
+          errorSintactico()
+
+def sent_cout():
+    match("cout")
+    nombre="cout"
+    agregarElemento(arbol,expresion(),nombre)
+    return nombre
+
+def asignacion():
+    nombre=str(tokens[i+1])
+    agregarElemento(arbol,tokens[i],nombre)
+    i+=1
+    match(nombre)
+    agregarElemento(arbol,expresion(),nombre)
+    return nombre
+
+
 archi=open("../../lexemas.txt",'r')
 tokens=""
 tokens = archi.read().splitlines()
