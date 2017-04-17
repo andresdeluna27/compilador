@@ -51,19 +51,19 @@ def declaracion():
           agregarElemento(arbol, listaVariables(), nombre)
     return nombre
 
-def listaVariables():
-    nombre=""
-    if tokens[i].isalpha():
+def listaVariables(tipo):
+    nombre=str(tokens[i])
+    if es_id():
+          i+=1
+          return nombre; 
+    else:
+          errorSintactico()     
           
-
+          
 def listaSentencias():
     nombre="lista-declaracion"
     agregarElemento(arbol, sentencias(), nombre)
     return nombre
-
-def declaracion():
-    nombre=lexema[i]
-    agregarElemento(arbol, identificador(), nombre)
 
 def declaracion():
     nombre=""
@@ -97,6 +97,7 @@ def isAssign():
     if es_id() && tokens[i+1]==":=":
           return true
     return false
+          
 archi=open("../../lexemas.txt",'r')
 tokens=""
 tokens = archi.read().splitlines()
