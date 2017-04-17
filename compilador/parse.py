@@ -99,7 +99,7 @@ def sentencias():
           return bloque()
     if isAssign():
           return asignacion()
-    return errorSintactico()
+    errorSintactico()
 
 def sent_cin():
     match("cin")
@@ -107,6 +107,7 @@ def sent_cin():
     if es_id():
           agregarElemento(arbol,tokens[i],nombre)
           i+=1
+          return nombre
     else:
           errorSintactico()
 
@@ -114,13 +115,15 @@ def sent_cout():
     match("cout")
     nombre="cout"
     agregarElemento(arbol,expresion(),nombre)
-    i+=1
+    return nombre
 
 def asignacion():
-    nombre=str(tokens[i])
-    i+=1;
-    match("=:")
-    agregarElemento(arbol,expresion(),tokens[i])
+    nombre=str(tokens[i+1])
+    agregarElemento(arbol,tokens[i],nombre)
+    i+=1
+    match(nombre)
+    agregarElemento(arbol,expresion(),nombre)
+    return nombre
 
 archi=open("../../lexemas.txt",'r')
 tokens=""
