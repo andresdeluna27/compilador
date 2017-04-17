@@ -17,16 +17,43 @@ def errorSintactico():
         
 def programa():
     match("main")
+    arbol=Arbol("main")
     match('{')
     if tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
         agregarElemento(arbol,listaDeclaracion(), "main")
-    agregarElemento(arbol,listaSentencias(), "main")
+    if tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
+        agregarElemento(arbol,listaSentencias(), "main")
     match('})
           
 def listaDeclaracion():
     nombre="lista-declaracion"
     agregarElemento(arbol, declaracion(), nombre)
+    match(';')
+    while tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
+          agregarElemento(arbol, declaracion(), nombre)
+          match(';')
     return nombre
+
+def declaracion():
+    nombre=""
+    if tokens[i]=="int":
+          match("int")
+          nombre="int"
+          agregarElemento(arbol, listaVariables(), nombre)
+    if tokens[i]=="float":
+          match("float")
+          nombre="float"
+          agregarElemento(arbol, listaVariables(), nombre)
+    if tokens[i]=="boolean":
+          match("boolean")
+          nombre="boolean"
+          agregarElemento(arbol, listaVariables(), nombre)
+    return nombre
+
+def listaVariables():
+    nombre=""
+    if tokens[i].isalpha():
+          
 
 def listaSentencias():
     nombre="lista-declaracion"
