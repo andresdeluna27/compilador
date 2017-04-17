@@ -59,11 +59,9 @@ def listaVariables():
 def listaSentencias():
     nombre="lista-declaracion"
     agregarElemento(arbol, sentencias(), nombre)
+    while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign()
+          agregarElemento(arbol, sentencias(), nombre)
     return nombre
-
-def declaracion():
-    nombre=lexema[i]
-    agregarElemento(arbol, identificador(), nombre)
 
 def es_id():
     texto=tokens[i]
@@ -81,6 +79,24 @@ def isAssign():
     if es_id() && tokens[i+1]==":=":
           return true
     return false
+
+def sentencias():
+    if tokens[i]=="if":
+          return seleccion()
+    if tokens[i]=="while":
+          return iteracion()
+    if tokens[i]=="do":
+          return repeticion()
+    if tokens[i]=="cin":
+          return sent-cin()
+    if tokens[i]=="cout":
+          return sent-cout()
+    if tokens[i]=="{":
+          return bloque()
+    if isAssign():
+          return asignacion()
+    return errorSintactico()
+          
 archi=open("../../lexemas.txt",'r')
 tokens=""
 tokens = archi.read().splitlines()
