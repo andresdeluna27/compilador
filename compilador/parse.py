@@ -1,6 +1,7 @@
 from arbol import *
 sintactico=open('sintactico.txt','w+')
 i=0;
+reservadas=("main","if","then","else","end","do","while","repeat","until","cin","cout","real","int","boolean")
 
 def printElement(element):
     print("",element)
@@ -52,6 +53,18 @@ def declaracion():
           nombre="boolean"
           agregarElemento(arbol, listaVariables(), nombre)
     return nombre
+
+def es_id():
+    texto=tokens[i]
+    j=0;
+    n=0;
+    if texto[j].isalpha():
+          while n<len(reservadas)
+              if texto==reservadas[n]
+                  return false
+          return true
+    else:
+          return false
           
           
 archi=open("../../lexemas.txt",'r')
