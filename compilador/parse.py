@@ -16,26 +16,26 @@ def errorSintactico():
     return; 
         
 def programa():
+    match("main")
     match('{')
-    agregarElemento(arbol,"main", "programa")
-    agregarElemento(arbol,listaDeclaracion(), "programa")
-    agregarElemento(arbol,listaSentencias(), "programa")
+    if tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
+        agregarElemento(arbol,listaDeclaracion(), "main")
+    agregarElemento(arbol,listaSentencias(), "main")
     match('})
           
 def listaDeclaracion():
     nombre="lista-declaracion"
-    if tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
-          agregarElemento(arbol, declaracion(), nombre)
+    agregarElemento(arbol, declaracion(), nombre)
     return nombre
+
+def listaSentencias():
+    nombre="lista-declaracion"
+    agregarElemento(arbol, sentencias(), nombre)
+    return nombre      
           
 archi=open("../../lexemas.txt",'r')
 tokens=""
 tokens = archi.read().splitlines()
-if tokens[i]=="main":
-    arbol = Arbol("programa")
-    i+=1
-    programa()
-else:
-    errorSintactico()
+programa()
 archi.close()
 sintactico.close()
