@@ -143,73 +143,70 @@ def bloque():
     match('}')
 
 def expresion():
-    nombre=""      
-    if isCamparation():
-          nombre=str(tokens[i+1])
-          agregarElemento(arbol, expresion_simple(), nombre)
-          i+=1
+    nombre=""
+    temp=exp_simple()
+    while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="=" or tokens[i]=="!=":
+          nombre=str(tokens[i])
+          nuevo=Arbol(nombre)
           match(nombre)
-          agregarElemento(arbol, expresion_simple(), nombre)
-          return nombre
-    else:
-          return exp_simple() 
+          agregarElemento(nuevo, temp, nombre)
+          agregarElemento(nuevo, exp_simple(), nombre)
+          temp=nuevo
+    return temp        
 
-def isComparation():
-    if es_id():
-          if tokens[i+1]=="<" or tokens[i+1]=="<=" or tokens[i+1]==">" or tokens[i+1]==">=" or tokens[i+1]=="=" or tokens[i+1]=="!=":
-              return true
-    return false
+
+#def exp_simple():
+    #nombre=""      
+    #if isOps():
+          #while tokens[i+1]=="+" or tokens[i+1]=="-":
+              #nombre=str(tokens[i+1])
+              #agregarElemento(arbol, termino(), nombre)
+              #match(nombre)
+              #agregarElemento(arbol, termino(), nombre)
+              #return nombre   
+   #else:
+       #return termino()
 
 def exp_simple():
     nombre=""
-    if isOps():
-          while tokens[i+1]=="+" or tokens[i+1]=="-":
-              nombre=str(tokens[i+1])
-              agregarElemento(arbol, termino(), nombre)
-              match(nombre)
-              agregarElemento(arbol, termino(), nombre)
-              return nombre   
-   else:
-       return termino()
-
-def isOps():
-    if tokens[i+1]=="+" or tokens[i+1]=="-":
-          return true
-    return false
+    temp=termino()
+    while tokens[i]=="+" or tokens[i]=="-":
+          nombre=str(tokens[i])
+          nuevo=Arbol(nombre)
+          match(nombre)
+          agregarElemento(nuevo, temp, nombre)
+          agregarElemento(nuevo, termino(), nombre)
+          temp=nuevo
+    return temp        
           
 def termino():
-    nombre=""    
-     if isOpm():
-          while tokens[i+1]=="*" or tokens[i+1]=="/":
-              nombre=str(tokens[i+1])
-              agregarElemento(arbol, factor(), nombre)
-              match(nombre)
-              agregarElemento(arbol, factor(), nombre)
-              return nombre   
-   else:
-       return factor()
-
-def isOpm():
-    if tokens[i+1]=="*" or tokens[i+1]=="/":
-          return true
-    return false
+    nombre=""
+    temp=factor()
+    while tokens[i]=="*" or tokens[i]=="/":
+          nombre=str(tokens[i])
+          nuevo=Arbol(nombre)
+          match(nombre)
+          agregarElemento(nuevo, temp, nombre)
+          agregarElemento(nuevo, termino(), nombre)
+          temp=nuevo
+    return temp
           
-def factor():
+def factor():      
     if tokens[i]=="(":
           match('(')
-          return expresion()
+          temp=expresion()
           match(')')
     elif es_id():
           i+=1
-          return str(tokens[i-1])
+          temp=Arbol(str(tokens[i-1]))
     else:
           try:
-               val = int(tokens[i])
+               val = float(tokens[i])
                i+=1
-               return str(tokens[i-1])
+               temp=Arbol(str(tokens[i-1]))
          except ValueError:
                errorSintactico()
-          
+   return temp       
 
     
 
