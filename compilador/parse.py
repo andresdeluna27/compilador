@@ -142,8 +142,24 @@ def bloque():
     return listaSentencias()
     match('}')
 
+#def expresion():
+    #nombre=""      
+    #if isCamparation():
+          #nombre=str(tokens[i+1])
+          #agregarElemento(arbol, expresion_simple(), nombre)
+          #i+=1
+          #match(nombre)
+          #agregarElemento(arbol, expresion_simple(), nombre)
+          #return nombre
+    #else:
+          #return exp_simple()
 def expresion():
-    nombre=""      
+    nombre=""
+    if tokens[i]=="(":
+          match("(")
+          expresion()
+          match(")")
+          
     if isCamparation():
           nombre=str(tokens[i+1])
           agregarElemento(arbol, expresion_simple(), nombre)
