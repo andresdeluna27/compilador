@@ -10,6 +10,11 @@ def agregarElemento(arbol, elemento, elementoPadre):
     subarbol = buscarSubarbol(arbol, elementoPadre);
     subarbol.hijos.append(Arbol(elemento))
 
+def setElemento(arbol,elemento):
+    arbol.elemento = elemento
+
+def setValor(arbol,valor):
+    arbol.valor = valor    
 
 def buscarSubarbol(arbol, elemento):
     if arbol.elemento == elemento:
