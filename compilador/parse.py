@@ -65,8 +65,11 @@ def es_id():
           return true
     else:
           return false
-          
-          
+
+def isAssign():
+    if es_id() && tokens[i+1]==":=":
+          return true
+    return false
 archi=open("../../lexemas.txt",'r')
 tokens=""
 tokens = archi.read().splitlines()
