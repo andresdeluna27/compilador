@@ -51,11 +51,15 @@ def declaracion():
           agregarElemento(arbol, listaVariables(), nombre)
     return nombre
 
-def listaVariables():
-    nombre=""
-    if tokens[i].isalpha():
+def listaVariables(tipo):
+    nombre=str(tokens[i])
+    if es_id():
+          i+=1
+          return nombre; 
+    else:
+          errorSintactico()     
           
-
+          
 def listaSentencias():
     nombre="lista-declaracion"
     agregarElemento(arbol, sentencias(), nombre)
