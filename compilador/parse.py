@@ -63,7 +63,7 @@ def listaVariables(tipo):
 def listaSentencias():
     nombre="lista-declaracion"
     agregarElemento(arbol, sentencias(), nombre)
-    while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign()
+    while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
           agregarElemento(arbol, sentencias(), nombre)
     return nombre
 
@@ -80,7 +80,7 @@ def es_id():
           return false
 
 def isAssign():
-    if es_id() && tokens[i+1]==":=":
+    if es_id() and tokens[i+1]==":=":
           return true
     return false
 
@@ -100,6 +100,118 @@ def sentencias():
     if isAssign():
           return asignacion()
     errorSintactico()
+
+    return errorSintactico()
+
+def seleccion():
+    nombre="if"
+    match("if")
+    match('(')
+    agregarElemento(arbol, expresion(), nombre)
+    match(')')      
+    match("then")
+    agregarElemento(arbol, bloque(), nombre)
+    if(tokens[i]=="else"):
+          match("else")
+          agregarElemento(arbol, bloque(), nombre)
+    return nombre
+
+
+def iteracion():
+    nombre="while"
+    match("while")      
+    match('(')      
+    agregarElemento(arbol, expresion(), nombre)
+    match(')')
+    agregarElemento(arbol, bloque(), nombre)
+    return nombre
+
+def repeticion():
+    nombre="do"
+    match("do")
+    agregarElemento(arbol, bloque(), nombre)
+    match("while")
+    match("(")
+    agregarElemento(arbol, expresion(), nombre)
+    match(")")
+    match(';')
+    return nombre
+
+def bloque():
+    match('{')
+    return listaSentencias()
+    match('}')
+
+def expresion():
+    nombre=""      
+    if isCamparation():
+          nombre=str(tokens[i+1])
+          agregarElemento(arbol, expresion_simple(), nombre)
+          i+=1
+          match(nombre)
+          agregarElemento(arbol, expresion_simple(), nombre)
+          return nombre
+    else:
+          return exp_simple() 
+
+def isComparation():
+    if es_id():
+          if tokens[i+1]=="<" or tokens[i+1]=="<=" or tokens[i+1]==">" or tokens[i+1]==">=" or tokens[i+1]=="=" or tokens[i+1]=="!=":
+              return true
+    return false
+
+def exp_simple():
+    nombre=""
+    if isOps():
+          while tokens[i+1]=="+" or tokens[i+1]=="-":
+              nombre=str(tokens[i+1])
+              agregarElemento(arbol, termino(), nombre)
+              match(nombre)
+              agregarElemento(arbol, termino(), nombre)
+              return nombre   
+   else:
+       return termino()
+
+def isOps():
+    if tokens[i+1]=="+" or tokens[i+1]=="-":
+          return true
+    return false
+          
+def termino():
+    nombre=""    
+     if isOpm():
+          while tokens[i+1]=="*" or tokens[i+1]=="/":
+              nombre=str(tokens[i+1])
+              agregarElemento(arbol, factor(), nombre)
+              match(nombre)
+              agregarElemento(arbol, factor(), nombre)
+              return nombre   
+   else:
+       return factor()
+
+def isOpm():
+    if tokens[i+1]=="*" or tokens[i+1]=="/":
+          return true
+    return false
+          
+def factor():
+    if tokens[i]=="(":
+          match('(')
+          return expresion()
+          match(')')
+    elif es_id():
+          i+=1
+          return str(tokens[i-1])
+    else:
+          try:
+               val = int(tokens[i])
+               i+=1
+               return str(tokens[i-1])
+         except ValueError:
+               errorSintactico()
+          
+
+    
 
 def sent_cin():
     match("cin")
@@ -124,6 +236,7 @@ def asignacion():
     match(nombre)
     agregarElemento(arbol,expresion(),nombre)
     return nombre
+
 
 archi=open("../../lexemas.txt",'r')
 tokens=""
