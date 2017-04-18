@@ -1,90 +1,122 @@
 from arbol import *
-sintactico=open('sintactico.txt','w+')
-i=0;
+#sintactico=open('sintactico.txt','w+')
+i=0
 reservadas=("main","if","then","else","end","do","while","repeat","until","cin","cout","real","int","boolean")
 
 def printElement(element):
     print("",element)
     
 def match(expectedToken):
-    if tokens[i]==excpectedToken:
+    global i
+    print("",tokens[i],"->",expectedToken)
+    if tokens[i]==expectedToken:
         i+=1
     else:
         errorSintactico()
 
 def errorSintactico():
+    global i
     print("Syntax error en -> ",tokens[i])
-    return; 
+    i+=1
         
 def programa():
+    global i
+    global arbol
+    nombre="main"
+    arbol=Arbol(nombre)
     match("main")
-    arbol=Arbol("main")
     match('{')
     if tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
-        agregarElemento(arbol,listaDeclaracion(), "main")
+        agregarElemento(arbol,listaDeclaracion(),nombre)
     if tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
-        agregarElemento(arbol,listaSentencias(), "main")
-    match('})
+        agregarElemento(arbol,listaSentencias(), nombre)
+    match('}')
           
 def listaDeclaracion():
+    global i
+    global arbol
     nombre="lista-declaracion"
-    agregarElemento(arbol, declaracion(), nombre)
+    temp=Arbol(nombre)
+    agregarElemento(temp, declaracion(), nombre)
     match(';')
     while tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
-          agregarElemento(arbol, declaracion(), nombre)
+          agregarElemento(temp, declaracion(), nombre)
           match(';')
-    return nombre
+    return temp
 
 def declaracion():
     nombre=""
+    global i
+    global arbol
     if tokens[i]=="int":
           match("int")
           nombre="int"
-          agregarElemento(arbol, listaVariables(), nombre)
+          temp=Arbol(nombre)
+          agregarElemento(temp, listaVariables(nombre), nombre)
     if tokens[i]=="float":
           match("float")
           nombre="float"
-          agregarElemento(arbol, listaVariables(), nombre)
+          temp=Arbol(nombre)
+          agregarElemento(temp, listaVariables(nombre), nombre)
     if tokens[i]=="boolean":
           match("boolean")
           nombre="boolean"
-          agregarElemento(arbol, listaVariables(), nombre)
-    return nombre
+          temp=Arbol(nombre)
+          agregarElemento(temp, listaVariables(nombre), nombre)
+    return temp
 
 def listaVariables(tipo):
-    nombre=str(tokens[i])
+    global i
+    global arbol
     if es_id():
+          nombre=str(tokens[i])
           i+=1
-          return nombre; 
+          temp=Arbol(tipo)
+          agregarElemento(temp, nombre, tipo)
+          match(',')
+          while tokens[i]!=';':
+              if es_id():
+                  hermano=str(tokens[i])
+                  i+=1
+                  agregarElemento(temp, hermano, tipo)
+                  if tokens[i]!=';':
+                      match(',')        
+          return temp; 
     else:
           errorSintactico()     
           
           
 def listaSentencias():
+    global i
+    global arbol
     nombre="lista-declaracion"
-    agregarElemento(arbol, sentencias(), nombre)
+    temp=Arbol(nombre)
+    agregarElemento(temp, sentencias(), nombre)
     while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
-          agregarElemento(arbol, sentencias(), nombre)
-    return nombre
+          agregarElemento(temp, sentencias(), nombre)
+    return temp
 
 def es_id():
-    texto=tokens[i]
-    j=0;
-    n=0;
+    global i
+    texto=str(tokens[i])
+    j=0
+    n=0
     if texto[j].isalpha():
-          while n<len(reservadas)
-              if texto==reservadas[n]
-                  return false
-          return true
-    else:
-          return false
+          while n < len(reservadas):
+              if texto==reservadas[n]:
+                  return False
+              else:
+                  n+=1
+          return True
 
 def isAssign():
+    global i
     if es_id() and tokens[i+1]==":=":
-          return true
-    return false
+          return True
+    return False
 
 def sentencias():
+    global i
     if tokens[i]=="if":
           return seleccion()
     if tokens[i]=="while":
@@ -101,43 +133,51 @@ def sentencias():
           return asignacion()
     errorSintactico()
 
-    return errorSintactico()
-
 def seleccion():
+    global i
+    global arbol
     nombre="if"
+    temp=Arbol(nombre)
     match("if")
     match('(')
-    agregarElemento(arbol, expresion(), nombre)
+    agregarElemento(temp, expresion(), nombre)
     match(')')      
     match("then")
-    agregarElemento(arbol, bloque(), nombre)
+    agregarElemento(temp, bloque(), nombre)
     if(tokens[i]=="else"):
           match("else")
-          agregarElemento(arbol, bloque(), nombre)
-    return nombre
+          agregarElemento(temp, bloque(), nombre)
+    return temp
 
 
 def iteracion():
+    global i
+    global arbol
     nombre="while"
+    temp=Arbol(nombre)
     match("while")      
     match('(')      
-    agregarElemento(arbol, expresion(), nombre)
+    agregarElemento(temp, expresion(), nombre)
     match(')')
-    agregarElemento(arbol, bloque(), nombre)
-    return nombre
+    agregarElemento(temp, bloque(), nombre)
+    return temp
 
 def repeticion():
+    global i
+    global arbol
     nombre="do"
+    temp=Arbol(nombre)
     match("do")
-    agregarElemento(arbol, bloque(), nombre)
+    agregarElemento(temp, bloque(), nombre)
     match("while")
     match("(")
-    agregarElemento(arbol, expresion(), nombre)
+    agregarElemento(temp, expresion(), nombre)
     match(")")
     match(';')
-    return nombre
+    return temp
 
 def bloque():
+    global i
     match('{')
     return listaSentencias()
     match('}')
@@ -153,13 +193,16 @@ def bloque():
           #return nombre
     #else:
           #return exp_simple()
+          
 def expresion():
+    global i
+    global arbol
     nombre=""
-
     temp=exp_simple()
     while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="=" or tokens[i]=="!=":
           nombre=str(tokens[i])
           nuevo=Arbol(nombre)
+          i+=1
           match(nombre)
           agregarElemento(nuevo, temp, nombre)
           agregarElemento(nuevo, exp_simple(), nombre)
@@ -181,6 +224,8 @@ def expresion():
 
 def exp_simple():
     nombre=""
+    global i
+    global arbol
     temp=termino()
     while tokens[i]=="+" or tokens[i]=="-":
           nombre=str(tokens[i])
@@ -193,6 +238,8 @@ def exp_simple():
           
 def termino():
     nombre=""
+    global i
+    global arbol
     temp=factor()
     while tokens[i]=="*" or tokens[i]=="/":
           nombre=str(tokens[i])
@@ -203,7 +250,9 @@ def termino():
           temp=nuevo
     return temp
           
-def factor():      
+def factor():
+    global i
+    global arbol
     if tokens[i]=="(":
           match('(')
           temp=expresion()
@@ -216,40 +265,50 @@ def factor():
                val = float(tokens[i])
                i+=1
                temp=Arbol(str(tokens[i-1]))
-         except ValueError:
+          except ValueError:
                errorSintactico()
-   return temp       
+    return temp       
 
     
 
 def sent_cin():
+    global i
+    global arbol
     match("cin")
     nombre="cin"
+    temp=Arbol(nombre)
     if es_id():
-          agregarElemento(arbol,tokens[i],nombre)
+          agregarElemento(temp,tokens[i],nombre)
           i+=1
-          return nombre
+          return temp
     else:
           errorSintactico()
 
 def sent_cout():
+    global i
     match("cout")
     nombre="cout"
-    agregarElemento(arbol,expresion(),nombre)
-    return nombre
+    temp=Arbol(nombre)
+    agregarElemento(temp,expresion(),nombre)
+    return temp
 
 def asignacion():
+    global i
+    global arbol
     nombre=str(tokens[i+1])
-    agregarElemento(arbol,tokens[i],nombre)
+    temp=Arbol(nombre)
+    agregarElemento(temp,tokens[i],nombre)
     i+=1
     match(nombre)
-    agregarElemento(arbol,expresion(),nombre)
-    return nombre
+    agregarElemento(temp,expresion(),nombre)
+    return temp
 
 
-archi=open("../../lexemas.txt",'r')
+#archi=open("../../lexemas.txt",'r')
+archi=open("lexemas.txt",'r')          
 tokens=""
 tokens = archi.read().splitlines()
 programa()
+ejecutarAnchoPrimero(arbol, printElement)          
 archi.close()
-sintactico.close()
+#sintactico.close()
