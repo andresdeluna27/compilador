@@ -79,7 +79,7 @@ def listaVariables(tipo):
                   hermano=str(tokens[i])
                   i+=1
                   agregarElemento(temp, hermano, tipo)
-                  if tokens[i+1]!=';':
+                  if tokens[i]!=';':
                       match(',')        
           return temp; 
     else:
