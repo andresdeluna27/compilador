@@ -41,8 +41,8 @@ def scanner(texto):
                         msj="{simbolo especial,",lexema,"}"
                         tokens.write(str(msj))
                         tokens.write('\n')
-                        lexemas.write(lexema)
-                        lexemas.write('\n')
+                        #lexemas.write(lexema)
+                        #lexemas.write('\n')
                         i+=2
                         col+=2
                         lexema=""
@@ -55,8 +55,8 @@ def scanner(texto):
                         msj="{simbolo especial,",lexema,"}"
                         tokens.write(str(msj))
                         tokens.write('\n')
-                        lexemas.write(lexema)
-                        lexemas.write('\n')
+                        #lexemas.write(lexema)
+                        #lexemas.write('\n')
                         lexema=""
                         i+=2
                         col+=2
@@ -80,8 +80,8 @@ def scanner(texto):
                                     msj="{simbolo especial,",lexema,"}"
                                     tokens.write(str(msj))
                                     tokens.write('\n')
-                                    lexemas.write(lexema)
-                                    lexemas.write('\n')
+                                    #lexemas.write(lexema)
+                                    #lexemas.write('\n')
                                     lexema=""
                                     i+=1
                                     if texto[i]=="\n":
@@ -402,8 +402,8 @@ def scanner(texto):
                     msj="{simbolo especial,",lexema,"}"
                     tokens.write(str(msj))
                     tokens.write('\n')
-                    lexemas.write(lexema)
-                    lexemas.write('\n')
+                    #lexemas.write(lexema)
+                    #lexemas.write('\n')
                     i+=1
                     lexema=" "
                     finCom=True
