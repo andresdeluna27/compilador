@@ -167,7 +167,7 @@ def repeticion():
     temp=Arbol(nombre)
     match("do")
     agregarElemento(temp, bloque(), nombre)
-    match("while")
+    match("until")
     match("(")
     agregarElemento(temp, expresion(), nombre)
     match(")")
@@ -281,6 +281,7 @@ def sent_cin():
     if es_id():
           agregarElemento(temp,tokens[i],nombre)
           i+=1
+          match(';');
           return temp
     else:
           errorSintactico()
@@ -291,6 +292,7 @@ def sent_cout():
     nombre="cout"
     temp=Arbol(nombre)
     agregarElemento(temp,expresion(),nombre)
+    match(';');
     return temp
 
 def asignacion():
