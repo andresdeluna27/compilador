@@ -88,7 +88,7 @@ def listaVariables(tipo):
           
 def listaSentencias():
     global i
-    nombre="lista-declaracion"
+    nombre="lista-sentencias"
     temp=Arbol(nombre)
     agregarElemento(temp, sentencias(), nombre)
     while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
@@ -198,7 +198,7 @@ def expresion():
     global arbol
     nombre=""
     temp=exp_simple()
-    while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="=" or tokens[i]=="!=":
+    while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="==" or tokens[i]=="!=":
           nombre=str(tokens[i])
           nuevo=Arbol(nombre)
           match(nombre)
