@@ -88,7 +88,6 @@ def listaVariables(tipo):
           
 def listaSentencias():
     global i
-    global arbol
     nombre="lista-declaracion"
     temp=Arbol(nombre)
     agregarElemento(temp, sentencias(), nombre)
@@ -135,7 +134,6 @@ def sentencias():
 
 def seleccion():
     global i
-    global arbol
     nombre="if"
     temp=Arbol(nombre)
     match("if")
@@ -202,7 +200,6 @@ def expresion():
     while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="=" or tokens[i]=="!=":
           nombre=str(tokens[i])
           nuevo=Arbol(nombre)
-          i+=1
           match(nombre)
           agregarElemento(nuevo, temp, nombre)
           agregarElemento(nuevo, exp_simple(), nombre)
@@ -257,17 +254,20 @@ def factor():
           match('(')
           temp=expresion()
           match(')')
+          return temp 
     elif es_id():
           i+=1
           temp=Arbol(str(tokens[i-1]))
+          return temp 
     else:
           try:
                val = float(tokens[i])
+               temp=Arbol(str(tokens[i]))
                i+=1
-               temp=Arbol(str(tokens[i-1]))
+               return temp 
           except ValueError:
                errorSintactico()
-    return temp       
+         
 
     
 
@@ -294,13 +294,13 @@ def sent_cout():
 
 def asignacion():
     global i
-    global arbol
     nombre=str(tokens[i+1])
     temp=Arbol(nombre)
     agregarElemento(temp,tokens[i],nombre)
     i+=1
     match(nombre)
     agregarElemento(temp,expresion(),nombre)
+    match(';')
     return temp
 
 
