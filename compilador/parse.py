@@ -202,7 +202,6 @@ def expresion():
     while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="=" or tokens[i]=="!=":
           nombre=str(tokens[i])
           nuevo=Arbol(nombre)
-          i+=1
           match(nombre)
           agregarElemento(nuevo, temp, nombre)
           agregarElemento(nuevo, exp_simple(), nombre)
@@ -249,7 +248,7 @@ def termino():
           agregarElemento(nuevo, termino(), nombre)
           temp=nuevo
     return temp
-          
+
 def factor():
     global i
     global arbol
@@ -257,19 +256,19 @@ def factor():
           match('(')
           temp=expresion()
           match(')')
+          return temp 
     elif es_id():
           i+=1
           temp=Arbol(str(tokens[i-1]))
+          return temp 
     else:
           try:
                val = float(tokens[i])
+               temp=Arbol(str(tokens[i]))
                i+=1
-               temp=Arbol(str(tokens[i-1]))
+               return temp 
           except ValueError:
                errorSintactico()
-    return temp       
-
-    
 
 def sent_cin():
     global i
@@ -301,6 +300,7 @@ def asignacion():
     i+=1
     match(nombre)
     agregarElemento(temp,expresion(),nombre)
+    match(";")
     return temp
 
 
