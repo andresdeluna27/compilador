@@ -88,7 +88,6 @@ def listaVariables(tipo):
           
 def listaSentencias():
     global i
-    global arbol
     nombre="lista-declaracion"
     temp=Arbol(nombre)
     agregarElemento(temp, sentencias(), nombre)
@@ -135,7 +134,6 @@ def sentencias():
 
 def seleccion():
     global i
-    global arbol
     nombre="if"
     temp=Arbol(nombre)
     match("if")
@@ -294,14 +292,13 @@ def sent_cout():
 
 def asignacion():
     global i
-    global arbol
     nombre=str(tokens[i+1])
     temp=Arbol(nombre)
     agregarElemento(temp,tokens[i],nombre)
     i+=1
     match(nombre)
     agregarElemento(temp,expresion(),nombre)
-    match(";")
+    match(';')
     return temp
 
 
