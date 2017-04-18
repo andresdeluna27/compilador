@@ -179,8 +179,9 @@ def repeticion():
 def bloque():
     global i
     match('{')
-    return listaSentencias()
+    nombre= listaSentencias()
     match('}')
+    return nombre
 
 #def expresion():
     #nombre=""      
