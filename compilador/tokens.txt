@@ -173,6 +173,7 @@
 ('{identificador,', 'a', '}')
 ('{operador,', '+', '}')
 ('{constante numerica entera,', '1', '}')
+('{simbolo especial,', ';', '}')
 ('{simbolo especial,', '}', '}')
 ('{palabra reservada,', 'else', '}')
 ('{simbolo especial,', '{', '}')
