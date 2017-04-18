@@ -177,8 +177,9 @@ def repeticion():
 def bloque():
     global i
     match('{')
-    return listaSentencias()
+    nombre= listaSentencias()
     match('}')
+    return nombre
 
 #def expresion():
     #nombre=""      
@@ -246,7 +247,7 @@ def termino():
           agregarElemento(nuevo, termino(), nombre)
           temp=nuevo
     return temp
-          
+
 def factor():
     global i
     global arbol
@@ -267,9 +268,6 @@ def factor():
                return temp 
           except ValueError:
                errorSintactico()
-         
-
-    
 
 def sent_cin():
     global i
