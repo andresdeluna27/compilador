@@ -198,7 +198,7 @@ def expresion():
     global arbol
     nombre=""
     temp=exp_simple()
-    while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="=" or tokens[i]=="!=":
+    while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="==" or tokens[i]=="!=":
           nombre=str(tokens[i])
           nuevo=Arbol(nombre)
           match(nombre)
