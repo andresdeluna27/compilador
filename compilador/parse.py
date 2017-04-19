@@ -1,4 +1,5 @@
 from arbol import *
+from Nodo import *
 #sintactico=open('sintactico.txt','w+')
 i=0
 reservadas=("main","if","then","else","end","do","while","repeat","until","cin","cout","real","int","boolean")
