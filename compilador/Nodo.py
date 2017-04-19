@@ -18,17 +18,21 @@ class Nodo(object):
         for hijo in self.hijos:
             print(str(hijo.nombre))
 
-    def recorrer_arbol(self):
-        print(str(self.nombre))
-        for hermano in self.hermanos:
-            recorrer_arbol(hermano)
-        for hijo in self.hijos:
-            recorrer_arbol(hijo)
+    def getName(self):
+        return str(self.nombre)
             
-def ejecutarProfundidadPrimero(arbol, funcion):
-    funcion(str(arbol.nombre))
-    for hijo in arbol.hijos:
-        ejecutarProfundidadPrimero(hijo, funcion)
+def recorrer_arbol(arbol, ite):
+    #ite+=1
+    if arbol!=None:
+        for i in range(ite):
+            print("-", end="")
+        print(" ",arbol.getName())
         
-
+        if len(arbol.hijos)!=0:
+            ite+=1
+            for hijo in arbol.hijos:
+                recorrer_arbol(hijo, ite)
+        if arbol.hermano!=None:
+            ite-=1
+            recorrer_arbol(arbol.hermano, ite)
         

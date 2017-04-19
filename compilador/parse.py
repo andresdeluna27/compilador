@@ -1,5 +1,5 @@
-from arbol import *
-from Nodo import *
+#from arbol import *
+from Nodo import * 
 #sintactico=open('sintactico.txt','w+')
 i=0
 reservadas=("main","if","then","else","end","do","while","repeat","until","cin","cout","real","int","boolean")
@@ -22,78 +22,94 @@ def errorSintactico():
         
 def programa():
     global i
-    global arbol
     nombre="main"
-    arbol=Arbol(nombre)
+    raiz=Nodo(nombre)
     match("main")
     match('{')
     if tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
-        agregarElemento(arbol,listaDeclaracion(),nombre)
+        p=listaDeclaracion()
+        raiz.agregar_hijos(p)
     if tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
-        agregarElemento(arbol,listaSentencias(), nombre)
+        q=listaSentencias()
+        raiz.agregar_hijos(q)
     match('}')
+    recorrer_arbol(raiz, 0)
           
 def listaDeclaracion():
     global i
-    global arbol
-    nombre="lista-declaracion"
-    temp=Arbol(nombre)
-    agregarElemento(temp, declaracion(), nombre)
+    temp=declaracion()
     match(';')
-    while tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
-          agregarElemento(temp, declaracion(), nombre)
-          match(';')
+    if tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
+        aux=declaracion()
+        temp.agregar_hermano(aux)
+        match(';')
+        while tokens[i]=="int" or tokens[i]=="float" or tokens[i]=="boolean":
+            q=aux
+            aux=declaracion()
+            q.agregar_hermano(aux)
+            match(';')
     return temp
 
 def declaracion():
     nombre=""
     global i
-    global arbol
     if tokens[i]=="int":
           match("int")
           nombre="int"
-          temp=Arbol(nombre)
-          agregarElemento(temp, listaVariables(nombre), nombre)
+          temp=Nodo(nombre)
+          p=listaVariables()
+          temp.agregar_hijos(p)
     if tokens[i]=="float":
           match("float")
           nombre="float"
-          temp=Arbol(nombre)
-          agregarElemento(temp, listaVariables(nombre), nombre)
+          temp=Nodo(nombre)
+          p=listaVariables()
+          temp.agregar_hijos(p)
     if tokens[i]=="boolean":
           match("boolean")
           nombre="boolean"
-          temp=Arbol(nombre)
-          agregarElemento(temp, listaVariables(nombre), nombre)
+          temp=Nodo(nombre)
+          p=listaVariables()
+          temp.agregar_hijos(p)
     return temp
 
-def listaVariables(tipo):
+def listaVariables():
     global i
-    global arbol
     if es_id():
-          nombre=str(tokens[i])
-          i+=1
-          temp=Arbol(tipo)
-          agregarElemento(temp, nombre, tipo)
-          match(',')
-          while tokens[i]!=';':
-              if es_id():
-                  hermano=str(tokens[i])
-                  i+=1
-                  agregarElemento(temp, hermano, tipo)
-                  if tokens[i]!=';':
-                      match(',')        
-          return temp; 
+        nombre=str(tokens[i])
+        i+=1
+        temp=Nodo(nombre)
+        match(',')
+        if es_id():
+            aux=Nodo(str(tokens[i]))
+            temp.agregar_hermano(aux)
+            i+=1
+            if tokens[i]!=';':
+                        match(',') 
+            while tokens[i]!=';':
+                q=aux
+                if es_id():
+                    hermano=str(tokens[i])
+                    i+=1
+                    aux=Nodo(hermano)
+                    q.agregar_hermano(aux)
+                    if tokens[i]!=';':
+                        match(',')        
+        return temp; 
     else:
           errorSintactico()     
           
           
 def listaSentencias():
     global i
-    nombre="lista-sentencias"
-    temp=Arbol(nombre)
-    agregarElemento(temp, sentencias(), nombre)
-    while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
-          agregarElemento(temp, sentencias(), nombre)
+    temp=sentencias()
+    if tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
+        aux=sentencias()
+        temp.agregar_hermano(aux)
+        while tokens[i]=="if" or tokens[i]=="while" or tokens[i]=="do" or tokens[i]=="cin" or tokens[i]=="cout" or isAssign():
+            q=aux
+            aux=sentencias()
+            q.agregar_hermano(aux)
     return temp
 
 def es_id():
@@ -136,41 +152,46 @@ def sentencias():
 def seleccion():
     global i
     nombre="if"
-    temp=Arbol(nombre)
+    temp=Nodo(nombre)
     match("if")
     match('(')
-    agregarElemento(temp, expresion(), nombre)
+    p=expresion()
+    temp.agregar_hijos(p)
     match(')')      
     match("then")
-    agregarElemento(temp, bloque(), nombre)
+    q=bloque()
+    temp.agregar_hijos(q)
     if(tokens[i]=="else"):
-          match("else")
-          agregarElemento(temp, bloque(), nombre)
+        match("else")
+        k=bloque()
+        temp.agregar_hijos(k)
     return temp
 
 
 def iteracion():
     global i
-    global arbol
     nombre="while"
-    temp=Arbol(nombre)
+    temp=Nodo(nombre)
     match("while")      
-    match('(')      
-    agregarElemento(temp, expresion(), nombre)
+    match('(')
+    p=expresion()
+    temp.agregar_hijos(p)
     match(')')
-    agregarElemento(temp, bloque(), nombre)
+    q=bloque()
+    temp.agregar_hijos(q)
     return temp
 
 def repeticion():
     global i
-    global arbol
     nombre="do"
-    temp=Arbol(nombre)
+    temp=Nodo(nombre)
     match("do")
-    agregarElemento(temp, bloque(), nombre)
+    p=bloque()
+    temp.agregar_hijos(p)
     match("until")
     match("(")
-    agregarElemento(temp, expresion(), nombre)
+    q=expresion()
+    temp.agregar_hijos(q)
     match(")")
     match(';')
     return temp
@@ -178,9 +199,9 @@ def repeticion():
 def bloque():
     global i
     match('{')
-    nombre= listaSentencias()
+    temp=listaSentencias()
     match('}')
-    return nombre
+    return temp
 
 #def expresion():
     #nombre=""      
@@ -196,17 +217,21 @@ def bloque():
           
 def expresion():
     global i
-    global arbol
     nombre=""
+    bandera=1
     temp=exp_simple()
     while tokens[i]=="<" or tokens[i]=="<=" or tokens[i]==">" or tokens[i]==">=" or tokens[i]=="==" or tokens[i]=="!=":
-          nombre=str(tokens[i])
-          nuevo=Arbol(nombre)
-          match(nombre)
-          agregarElemento(nuevo, temp, nombre)
-          agregarElemento(nuevo, exp_simple(), nombre)
-          temp=nuevo
-    return temp        
+        bandera=0
+        nombre=str(tokens[i])
+        nuevo=Nodo(nombre)
+        match(nombre)
+        nuevo.agregar_hijos(temp)
+        p=exp_simple()
+        nuevo.agregar_hijos(p)
+    if bandera==0:
+        return nuevo
+    else:
+        return temp     
 
 
 #def exp_simple():
@@ -224,83 +249,102 @@ def expresion():
 def exp_simple():
     nombre=""
     global i
-    global arbol
+    bandera=1
     temp=termino()
     while tokens[i]=="+" or tokens[i]=="-":
-          nombre=str(tokens[i])
-          nuevo=Arbol(nombre)
-          match(nombre)
-          agregarElemento(nuevo, temp, nombre)
-          agregarElemento(nuevo, termino(), nombre)
-          temp=nuevo
-    return temp        
-          
+        bandera=0
+        nombre=str(tokens[i])
+        nuevo=Nodo(nombre)
+        match(nombre)
+        nuevo.agregar_hijos(temp)
+        p=termino()
+        nuevo.agregar_hijos(p)
+    if bandera==0:
+        return nuevo
+    else:
+        return temp
+    
 def termino():
     nombre=""
     global i
-    global arbol
+    bandera=1
     temp=factor()
     while tokens[i]=="*" or tokens[i]=="/":
-          nombre=str(tokens[i])
-          nuevo=Arbol(nombre)
-          match(nombre)
-          agregarElemento(nuevo, temp, nombre)
-          agregarElemento(nuevo, termino(), nombre)
-          temp=nuevo
-    return temp
-
+        bandera=0
+        nombre=str(tokens[i])
+        nuevo=Nodo(nombre)
+        match(nombre)
+        nuevo.agregar_hijos(temp)
+        p=factor()
+        nuevo.agregar_hijos(p)
+    if bandera==0:
+        return nuevo
+    else:
+        return temp
+    
 def factor():
     global i
-    global arbol
     if tokens[i]=="(":
-          match('(')
-          temp=expresion()
-          match(')')
-          return temp 
+        match('(')
+        temp=expresion()
+        match(')')
+        return temp 
     elif es_id():
-          i+=1
-          temp=Arbol(str(tokens[i-1]))
-          return temp 
+        temp=Nodo(str(tokens[i]))
+        i+=1
+        return temp 
     else:
-          try:
-               val = float(tokens[i])
-               temp=Arbol(str(tokens[i]))
-               i+=1
-               return temp 
-          except ValueError:
-               errorSintactico()
+        try:
+            if '.' in tokens[i]:
+                #val = float(tokens[i])
+                temp=Nodo(str(tokens[i]))
+                i+=1
+                return temp
+            else:
+                #val = int(tokens[i])
+                temp=Nodo(str(tokens[i]))
+                i+=1 
+                return temp 
+        except ValueError:
+            errorSintactico()
+         
+
+    
 
 def sent_cin():
     global i
-    global arbol
-    match("cin")
     nombre="cin"
-    temp=Arbol(nombre)
+    temp=nombre(nombre)
+    match("cin")
     if es_id():
-          agregarElemento(temp,tokens[i],nombre)
-          i+=1
-          match(';');
-          return temp
+        p=Nodo(str(tokens[i]))
+        temp.agregar_hijos(p)
+        i+=1
+        match(';');
+        return temp
     else:
-          errorSintactico()
+        errorSintactico()
 
 def sent_cout():
     global i
-    match("cout")
     nombre="cout"
-    temp=Arbol(nombre)
-    agregarElemento(temp,expresion(),nombre)
+    temp=Nodo(nombre)
+    match("cout")
+    p=expresion()
+    temp.agregar_hijos(p)
     match(';');
     return temp
 
 def asignacion():
     global i
     nombre=str(tokens[i+1])
-    temp=Arbol(nombre)
-    agregarElemento(temp,tokens[i],nombre)
+    temp=Nodo(nombre)
+    p=Nodo(str(tokens[i]))
+    temp.agregar_hijos(p)
     i+=1
     match(nombre)
-    agregarElemento(temp,expresion(),nombre)
+    q=expresion()
+    temp.agregar_hijos(q)
     match(';')
     return temp
 
@@ -309,7 +353,6 @@ def asignacion():
 archi=open("lexemas.txt",'r')          
 tokens=""
 tokens = archi.read().splitlines()
-programa()
-ejecutarAnchoPrimero(arbol, printElement)          
+programa()         
 archi.close()
 #sintactico.close()
