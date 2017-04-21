@@ -34,6 +34,7 @@ def scanner(texto):
                     i+=1
                     ln+=1
                     col=1
+                    lexemas.write('\n')
                 else:
                     if  texto[i]=="/" and texto[i+1]=="/":
                         lexema+=texto[i]+texto[i+1]
@@ -106,7 +107,7 @@ def scanner(texto):
                         tokens.write(str(msj))
                         tokens.write('\n')
                         lexemas.write(lexema)
-                        lexemas.write('\n')
+                        lexemas.write('~')
                         i+=1
                         col+=1
                         lexema=""
@@ -130,7 +131,7 @@ def scanner(texto):
                                 tokens.write(str(msj))
                                 tokens.write('\n')
                                 lexemas.write(lexema)
-                                lexemas.write('\n')
+                                lexemas.write('~')
                                 lexema=""
                                 bandera=0
                                 break
@@ -142,7 +143,7 @@ def scanner(texto):
                             tokens.write(str(msj))
                             tokens.write('\n')
                             lexemas.write(lexema)
-                            lexemas.write('\n')
+                            lexemas.write('~')
                             lexema=""
                     elif texto[i]=="+" and texto[i+1]=="+":
                          lexema+=texto[i]+texto[i+1]
@@ -151,7 +152,7 @@ def scanner(texto):
                          tokens.write(str(msj))
                          tokens.write('\n')
                          lexemas.write(lexema)
-                         lexemas.write('\n')
+                         lexemas.write('~')
                          lexema=""
                          i+=2
                          col+=2
@@ -209,7 +210,7 @@ def scanner(texto):
                         tokens.write(str(msj))
                         tokens.write('\n')
                         lexemas.write(lexema)
-                        lexemas.write('\n')
+                        lexemas.write('~')
                         lexema=""
                     elif texto[i]=="-" and texto[i+1]=="-":
                         lexema+=texto[i]+texto[i+1]
@@ -218,7 +219,7 @@ def scanner(texto):
                         tokens.write(str(msj))
                         tokens.write('\n')
                         lexemas.write(lexema)
-                        lexemas.write('\n')
+                        lexemas.write('~')
                         lexema=""
                         i+=2
                         col+=2
@@ -277,7 +278,7 @@ def scanner(texto):
                         tokens.write(str(msj))
                         tokens.write('\n')
                         lexemas.write(lexema)
-                        lexemas.write('\n')
+                        lexemas.write('~')
                         lexema=""
                     elif texto[i].isdigit():
                         lexema+=texto[i]
@@ -317,7 +318,7 @@ def scanner(texto):
                             tokens.write(str(msj))
                             tokens.write('\n')
                             lexemas.write(lexema)
-                            lexemas.write('\n')
+                            lexemas.write('~')
                             lexema=""
                         else:
                             if c==0:
@@ -326,7 +327,7 @@ def scanner(texto):
                                 tokens.write(str(msj))
                                 tokens.write('\n')
                                 lexemas.write(lexema)
-                                lexemas.write('\n')
+                                lexemas.write('~')
                                 lexema=""
                     elif texto[i]=="<" or texto[i]==">" or texto[i]=="!" or texto[i]==":" or texto[i]=="=":
                         lexema+=texto[i]
@@ -341,7 +342,7 @@ def scanner(texto):
                             tokens.write(str(msj))
                             tokens.write('\n')
                             lexemas.write(lexema)
-                            lexemas.write('\n')
+                            lexemas.write('~')
                             lexema=""
                         else:
                             if lexema==":":
@@ -362,7 +363,7 @@ def scanner(texto):
                                 tokens.write(str(msj))
                                 tokens.write('\n')
                                 lexemas.write(lexema)
-                                lexemas.write('\n')
+                                lexemas.write('~')
                                 lexema=""
                     elif texto[i] in simbolos:
                         lexema+=texto[i]
@@ -373,7 +374,7 @@ def scanner(texto):
                         tokens.write(str(msj))
                         tokens.write('\n')
                         lexemas.write(lexema)
-                        lexemas.write('\n')
+                        lexemas.write('~')
                         lexema=""
                     else:
                         print("error en ",texto[i]," en la linea ",ln," y columna ",col-1)
