@@ -22,7 +22,6 @@ class Nodo(object):
         return str(self.nombre)
             
 def recorrer_arbol(arbol, ite):
-    #ite+=1
     if arbol!=None:
         for i in range(ite):
             print("-", end="")
